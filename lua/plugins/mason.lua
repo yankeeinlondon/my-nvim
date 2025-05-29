@@ -21,7 +21,7 @@ return {
                 "rust-analyzer",
                 "svelte-language-server",
                 "taplo",
-                "typescript-language-server",
+                "ts_ls",
                 "yaml-language-server",
             },
         }
