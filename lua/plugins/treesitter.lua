@@ -7,7 +7,7 @@ return {
     event = { "BufEnter" },
     dependencies = {
       -- Additional text objects for treesitter
-      "nvim-treesitter/nvim-treesitter-textobjects",
+      { "nvim-treesitter/nvim-treesitter-textobjects", lazy = true }
     },
     config = function()
       ---@diagnostic disable: missing-fields

@@ -21,7 +21,7 @@ return {
     },
     config = function()
       -- Use neodev to configure lua_ls in nvim directories - must load before lspconfig
-      require("neodev").setup()
+      -- require("neodev").setup()
 
       -- Setup mason so it can manage 3rd party LSP servers
       require("mason").setup {
@@ -132,14 +132,25 @@ return {
       end
 
       -- Iterate over our servers and set them up
+      -- for name, config in pairs(servers) do
+      --   require("lspconfig")[name].setup {
+      --     capabilities = default_capabilities,
+      --     filetypes = config.filetypes,
+      --     handlers = vim.tbl_deep_extend("force", {}, default_handlers, config.handlers or {}),
+      --     on_attach = on_attach,
+      --     settings = config.settings,
+      --   }
+      -- end
       for name, config in pairs(servers) do
-        require("lspconfig")[name].setup {
+        vim.lsp.config(name, {
           capabilities = default_capabilities,
           filetypes = config.filetypes,
           handlers = vim.tbl_deep_extend("force", {}, default_handlers, config.handlers or {}),
           on_attach = on_attach,
           settings = config.settings,
-        }
+        })
+
+        vim.lsp.enable(name)
       end
 
       -- Configure borderd for LspInfo ui
