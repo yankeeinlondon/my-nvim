@@ -17,25 +17,7 @@ return {
 
         wilder.set_option('pipeline', {
           wilder.branch(
-            wilder.python_file_finder_pipeline({
-              file_command = function(_, arg)
-                if string.find(arg, '.') ~= nil then
-                  return { 'fdfind', '-tf', '-H' }
-                else
-                  return { 'fdfind', '-tf' }
-                end
-              end,
-              dir_command = { 'fd', '-td' },
-              filters = { 'cpsm_filter' },
-            }),
-            wilder.substitute_pipeline({
-              pipeline = wilder.python_search_pipeline({
-                skip_cmdtype_check = 1,
-                pattern = wilder.python_fuzzy_pattern({
-                  start_at_boundary = 0,
-                }),
-              }),
-            }),
+            wilder.substitute_pipeline(),
             wilder.cmdline_pipeline({
               fuzzy = 2,
               fuzzy_filter = wilder.lua_fzy_filter(),
@@ -44,16 +26,11 @@ return {
               wilder.check(function(_, x) return x == '' end),
               wilder.history(),
             },
-            wilder.python_search_pipeline({
-              pattern = wilder.python_fuzzy_pattern({
-                start_at_boundary = 0,
-              }),
-            })
+            wilder.search_pipeline()
           ),
         })
 
         local highlighters = {
-          wilder.pcre2_highlighter(),
           wilder.lua_fzy_highlighter(),
         }
 
