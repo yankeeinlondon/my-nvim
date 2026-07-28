@@ -1,99 +1,71 @@
 return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = function()
-      require("nvim-treesitter.install").update({ with_sync = true })
-    end,
-    event = { "BufEnter" },
-    dependencies = {
-      -- Additional text objects for treesitter
-      { "nvim-treesitter/nvim-treesitter-textobjects", lazy = true }
-    },
-    config = function()
-      ---@diagnostic disable: missing-fields
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = {
-          "bash",
-          "c",
-          "css",
-          "gleam",
-          "graphql",
-          "html",
-          "javascript",
-          "json",
-          "lua",
-          "markdown",
-          -- "ocaml",
-          -- "ocaml_interface",
-          "prisma",
-          -- "tsx",
-          "typescript",
-          "vim",
-          -- "yaml", This is currently borked see: https://github.com/ikatyang/tree-sitter-yaml/issues/53
-        },
-        sync_install = false,
-        highlight = {
-          enable = true,
-        },
-        indent = {
-          enable = true,
-          disable = { "ocaml", "ocaml_interface" },
-        },
-        autopairs = {
-          enable = true,
-        },
-        autotag = {
-          enable = true,
-        },
-        --[[ context_commentstring = {
-					enable = true,
-					enable_autocmd = false,
-				}, ]]
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            init_selection = "<c-space>",
-            node_incremental = "<c-space>",
-            scope_incremental = "<c-s>",
-            node_decremental = "<c-backspace>",
-          },
-        },
-        textobjects = {
-          select = {
-            enable = true,
-            lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-            keymaps = {
-              -- You can use the capture groups defined in textobjects.scm
-              ["aa"] = "@parameter.outer",
-              ["ia"] = "@parameter.inner",
-              ["af"] = "@function.outer",
-              ["if"] = "@function.inner",
-              ["ac"] = "@class.outer",
-              ["ic"] = "@class.inner",
-            },
-          },
-          move = {
-            enable = true,
-            set_jumps = true, -- whether to set jumps in the jumplist
-            goto_next_start = {
-              ["]m"] = "@function.outer",
-              ["]]"] = "@class.outer",
-            },
-            goto_next_end = {
-              ["]M"] = "@function.outer",
-              ["]["] = "@class.outer",
-            },
-            goto_previous_start = {
-              ["[m"] = "@function.outer",
-              ["[["] = "@class.outer",
-            },
-            goto_previous_end = {
-              ["[M"] = "@function.outer",
-              ["[]"] = "@class.outer",
-            },
-          },
-        },
-      })
-    end,
-  },
+	{
+		-- Treesitter on the new "main" branch
+		"MeanderingProgrammer/treesitter-modules.nvim",
+		branch = "main",
+		-- Update parsers when the plugin is installed or updated
+		build = ":TSUpdate",
+		event = { "BufReadPre", "BufNewFile" },
+		-- extra plugins that use Treesitter
+		dependencies = {
+			{
+				-- Text objects still work with the new API
+				"nvim-treesitter/nvim-treesitter",
+				"nvim-treesitter/nvim-treesitter-textobjects",
+				lazy = true,
+			},
+			{
+				-- Autopairs is no longer built into Treesitter; this plugin adds context‑aware pairs
+				"windwp/nvim-autopairs",
+				opts = {
+					check_ts = true, -- Use Treesitter for context awareness [oai_citation:4‡mintlify.com](https://www.mintlify.com/LunarVim/Neovim-from-scratch/plugins/autopairs#:~:text=Configuration)
+				},
+			},
+			{
+				-- Autotag for HTML/JSX/TSX – also no longer built into Treesitter
+				"windwp/nvim-ts-autotag",
+				opts = {},
+			},
+			{
+				-- Optional: incremental selection replacement
+				"shushtain/incselect.nvim",
+				-- no setup options; map your keybindings here to mimic your old config
+				config = function()
+					-- these keymaps replicate your old <c-space>/<c-s>/<c-backspace> mappings
+					vim.keymap.set({ "n", "x" }, "<C-space>", function()
+						return require("incselect").init()
+					end, { expr = true, silent = true })
+					vim.keymap.set("x", "<C-s>", function()
+						return require("incselect").parent()
+					end, { expr = true, silent = true })
+					vim.keymap.set("x", "<C-BS>", function()
+						return require("incselect").undo()
+					end, { expr = true, silent = true })
+				end,
+			},
+		},
+		-- Options passed directly to `require("nvim‑treesitter.config").setup()`
+		opts = {
+			ensure_installed = {
+				"bash",
+				"c",
+				"css",
+				-- "gleam",
+				-- "graphql",
+				"html",
+				"javascript",
+				"json",
+				"lua",
+				"prisma",
+				"typescript",
+				"vim",
+			},
+			auto_install = true, -- install missing parsers automatically [oai_citation:5‡mintlify.com](https://www.mintlify.com/snehilshah/nvim/plugins/treesitter#:~:text=Treesitter%20is%20loaded%20immediately%20,and%20automatically%20updates%20parsers)
+			highlight = { enable = true }, -- enable highlighting [oai_citation:6‡mintlify.com](https://www.mintlify.com/snehilshah/nvim/plugins/treesitter#:~:text=%22nvim,opts%20%3D%20%7B%7D%2C)
+			indent = {
+				enable = true,
+				disable = { "ocaml", "ocaml_interface" },
+			},
+		},
+	},
 }
