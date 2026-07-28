@@ -61,18 +61,18 @@ end)
 nnoremap("<leader>'", "<C-^>", { desc = "Switch to last buffer" })
 
 -- Save with leader key
-nnoremap("<leader>w", "<cmd>w<cr>", { silent = false })
+nnoremap("<leader>w", "<cmd>w<cr>", { desc = "Save", silent = false })
 
 -- Quit with leader key
-nnoremap("<leader>q", "<cmd>q<cr>", { silent = false })
+nnoremap("<leader>q", "<cmd>q<cr>", { desc = "Quit", silent = false })
 
 -- Save and Quit with leader key
-nnoremap("<leader>z", "<cmd>wq<cr>", { silent = false })
+nnoremap("<leader>z", "<cmd>wq<cr>", { desc = "Save & Quit", silent = false })
 
 -- Map Oil to <leader>e
 nnoremap("<leader>e", function()
   require("oil").toggle_float()
-end)
+end, { desc = "Oil" })
 -- Center buffer while navigating
 nnoremap("<C-u>", "<C-u>zz")
 nnoremap("<C-d>", "<C-d>zz")
@@ -98,7 +98,7 @@ end)
 -- Open Spectre for global find/replace
 nnoremap("<leader>S", function()
   require("spectre").toggle()
-end)
+end, { desc = "Find & Replace" })
 
 -- Open Spectre for global find/replace for the word under the cursor in normal mode
 nnoremap("<leader>sw", function()
@@ -118,7 +118,7 @@ nnoremap("H", "^")
 nnoremap("U", "<C-r>")
 
 -- Turn off highlighted results
-nnoremap("<leader>no", "<cmd>noh<cr>")
+nnoremap("<leader>no", "<cmd>noh<cr>", { desc = "No Highlight" })
 
 -- Diagnostics
 
@@ -162,31 +162,28 @@ nnoremap("<leader>d", function()
   vim.diagnostic.open_float({
     border = "rounded",
   })
-end)
+end, { desc = "Diagnostics Float" })
 
 -- Place all dignostics into a qflist
 nnoremap("<leader>ld", vim.diagnostic.setqflist, { desc = "Quickfix [L]ist [D]iagnostics" })
 
 -- Navigate to next qflist item
-nnoremap("<leader>cn", ":cnext<cr>zz")
+nnoremap("<leader>cn", ":cnext<cr>zz", { desc = "Next" })
 
 -- Navigate to previos qflist item
-nnoremap("<leader>cp", ":cprevious<cr>zz")
+nnoremap("<leader>cp", ":cprevious<cr>zz", { desc = "Previous" })
 
 -- Open the qflist
-nnoremap("<leader>co", ":copen<cr>zz")
+nnoremap("<leader>co", ":copen<cr>zz", { desc = "Open" })
 
 -- Close the qflist
-nnoremap("<leader>cc", ":cclose<cr>zz")
+nnoremap("<leader>cc", ":cclose<cr>zz", { desc = "Close" })
 
 -- Map MaximizerToggle (szw/vim-maximizer) to leader-m
-nnoremap("<leader>m", ":MaximizerToggle<cr>")
+nnoremap("<leader>m", ":MaximizerToggle<cr>", { desc = "Maximize" })
 
 -- Resize split windows to be equal size
-nnoremap("<leader>=", "<C-w>=")
-
--- Press leader f to format
-nnoremap("<leader>f", ":Format<cr>")
+nnoremap("<leader>=", "<C-w>=", { desc = "Equal Windows" })
 
 -- Press leader rw to rotate open windows
 nnoremap("<leader>rw", ":RotateWindows<cr>", { desc = "[R]otate [W]indows" })
@@ -201,46 +198,46 @@ nnoremap("<leader>tc", ":TSC<cr>", { desc = "[T]ypeScript [C]ompile" })
 -- Open harpoon ui
 nnoremap("<leader>ho", function()
   harpoon_ui.toggle_quick_menu()
-end)
+end, { desc = "Open Menu" })
 
 -- Add current file to harpoon
 nnoremap("<leader>ha", function()
   harpoon_mark.add_file()
-end)
+end, { desc = "Add File" })
 
 -- Remove current file from harpoon
 nnoremap("<leader>hr", function()
   harpoon_mark.rm_file()
-end)
+end, { desc = "Remove File" })
 
 -- Remove all files from harpoon
 nnoremap("<leader>hc", function()
   harpoon_mark.clear_all()
-end)
+end, { desc = "Clear All" })
 
 -- Quickly jump to harpooned files
 nnoremap("<leader>1", function()
   harpoon_ui.nav_file(1)
-end)
+end, { desc = "Harpoon 1" })
 
 nnoremap("<leader>2", function()
   harpoon_ui.nav_file(2)
-end)
+end, { desc = "Harpoon 2" })
 
 nnoremap("<leader>3", function()
   harpoon_ui.nav_file(3)
-end)
+end, { desc = "Harpoon 3" })
 
 nnoremap("<leader>4", function()
   harpoon_ui.nav_file(4)
-end)
+end, { desc = "Harpoon 4" })
 
 nnoremap("<leader>5", function()
   harpoon_ui.nav_file(5)
-end)
+end, { desc = "Harpoon 5" })
 
 -- Git keymaps --
-nnoremap("<leader>gb", ":Gitsigns toggle_current_line_blame<cr>")
+nnoremap("<leader>gb", ":Gitsigns toggle_current_line_blame<cr>", { desc = "Toggle Blame" })
 nnoremap("<leader>gf", function()
   local cmd = {
     "sort",
@@ -330,7 +327,7 @@ end
 
 
 -- Symbol Outline keybind
-nnoremap("<leader>so", ":SymbolsOutline<cr>")
+nnoremap("<leader>so", ":SymbolsOutline<cr>", { desc = "Symbols Outline" })
 
 -- Vim Illuminate keybinds
 nnoremap("<leader>]", function()
